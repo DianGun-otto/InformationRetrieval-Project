@@ -1,0 +1,26 @@
+{
+    "root": {
+        "password": "123456",
+        "preferences": {
+            "category": "Science"
+        },
+        "history": [
+            {
+                "query": "机器学习",
+                "timestamp": 1734268512.2091167
+            }
+        ]
+    },
+    "user1": {
+        "password": "000000",
+        "preferences": {
+            "category": "Science"
+        },
+        "history": [
+            {
+                "query": "南开大学",
+                "timestamp": 1734428118.1490424
+            }
+        ]
+    }
+}

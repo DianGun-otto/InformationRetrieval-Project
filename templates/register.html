@@ -1,0 +1,39 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 南开大学资源搜索引擎</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>南开大学资源搜索引擎 - 注册</h1>
+
+    <form method="POST">
+        <div>
+            <label for="username">用户名：</label>
+            <input type="text" name="username" id="username" placeholder="请输入用户名" required>
+        </div>
+
+        <div>
+            <label for="password">密码：</label>
+            <input type="password" name="password" id="password" placeholder="请输入密码" required>
+        </div>
+
+        <button type="submit">注册</button>
+    </form>
+
+    <p>已有账号？<a href="{{ url_for('login') }}">登录</a></p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li style="color: red;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

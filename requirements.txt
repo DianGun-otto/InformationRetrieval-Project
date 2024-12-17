@@ -1,0 +1,9 @@
+Flask==2.3.2
+Elasticsearch==7.17.0
+scrapy==2.10.0
+scrapy-items==1.0.0
+beautifulsoup4==4.12.2
+requests==2.31.0
+jieba==0.42.1
+ijson==3.2.2
+scikit-learn==1.3.0

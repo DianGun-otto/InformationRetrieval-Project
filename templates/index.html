@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南开大学资源搜索引擎</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("input[name='query']").on("input", function() {
+                let query = $(this).val();
+                if (query.length > 0) {
+                    $.get("/recommend", { query: query }, function(data) {
+                        let recommendations = data.recommendations;
+                        let recommendationsHtml = "";
+                        recommendations.forEach(function(item) {
+                            recommendationsHtml += `<li><a href="${item.url}" target="_blank">${item.title}</a></li>`;
+                        });
+                        $("#recommendations").html(recommendationsHtml).show();
+                    });
+                } else {
+                    $("#recommendations").hide();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>南开大学资源搜索引擎</h1>
+
+    {% if user_preferences %}
+        <p>偏好分类：{{ user_preferences['category'] }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="text" name="query" placeholder="请输入查询内容" required>
+        <input type="text" name="category" placeholder="请输入您的偏好（如 AI, Science, Technology 等）" value="{{ user_preferences['category'] if user_preferences['category'] else '' }}" required>
+        <button type="submit">搜索</button>
+    </form>
+
+    <div id="recommendations" style="display: none; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
+        <h3>个性化推荐：</h3>
+        <ul></ul>
+    </div>
+
+    <h2>查询历史</h2>
+    <ul>
+        {% for i, history in enumerate(query_history) %}
+            <li>
+                <a href="{{ url_for('index') }}">{{ history['query'] }}</a> - 
+                <a href="{{ url_for('delete_history', index=i) }}">删除</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if results %}
+        <h2>搜索结果</h2>
+        <ul>
+            {% for result in results %}
+                <li>
+                    <strong>{{ result['title'] }}</strong><br>
+                    <a href="{{ result['url'] }}" target="_blank">{{ result['url'] }}</a><br>
+                    {% if result['snapshot_path'] %}
+                        <a href="{{ result['snapshot_path'] }}" target="_blank">查看网页快照</a><br>
+                    {% endif %}
+                    <p>{{ result['content'][:150] }}...</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
